@@ -1,0 +1,2 @@
+# gomock
+mock anything
