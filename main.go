@@ -52,6 +52,10 @@ func main() {
 
 		if request.CarianKompaun != "" {
 			compoundAmnt := compounds[request.CarianKompaun]
+			if compoundAmnt == 0 {
+				return c.SendStatus(fiber.StatusNotFound)
+			}
+
 			listResponse := []KompaunDetail{}
 			data := KompaunDetail{
 				NoKompaun:     request.CarianKompaun,
