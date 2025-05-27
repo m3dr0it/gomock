@@ -40,9 +40,9 @@ func main() {
 	app := fiber.New()
 	app.Use(logger.New())
 	app.Post("/mphtj_online/Carian_api.cfm", func(c *fiber.Ctx) error {
-		var request KompaunRequest
-		if err := c.BodyParser(&request); err != nil {
-			err.Error()
+		request := KompaunRequest{
+			Carian:        c.FormValue("Carian"),
+			CarianKompaun: c.FormValue("Carian_Kompaun"),
 		}
 
 		if request.CarianKompaun != "" {
