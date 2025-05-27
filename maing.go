@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"log"
 )
 
 type KompaunRequest struct {
@@ -45,7 +46,9 @@ func main() {
 			CarianKompaun: c.FormValue("Carian_Kompaun"),
 		}
 
-		if request.CarianKompaun != "\"\"" {
+		log.Println(request)
+
+		if request.Carian != "" || request.CarianKompaun != "\"\"" {
 			compoundAmnt := compounds[request.CarianKompaun]
 			listResponse := []KompaunDetail{}
 			data := KompaunDetail{
