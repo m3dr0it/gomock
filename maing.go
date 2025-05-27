@@ -47,6 +47,7 @@ func main() {
 
 		if request.CarianKompaun != "" {
 			compoundAmnt := compounds[request.CarianKompaun]
+			listResponse := []KompaunDetail{}
 			data := KompaunDetail{
 				NoKompaun:     request.CarianKompaun,
 				NoDaftar:      "",
@@ -59,8 +60,9 @@ func main() {
 				CukaiJalan:    "",
 				NamaKesalahan: "TELAH MELETAK KERETA MOTOR ATAU MENUNGGU DIMANA-MANA JALAN SELAIN DARI TEMPAT LETAKKERETA",
 			}
+			listResponse = append(listResponse, data)
 
-			return c.JSON(data)
+			return c.JSON(listResponse)
 		}
 
 		list := []KompaunDetail{}
