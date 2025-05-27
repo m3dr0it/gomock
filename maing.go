@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
 type KompaunRequest struct {
@@ -37,7 +38,7 @@ func main() {
 	}
 
 	app := fiber.New()
-
+	app.Use(logger.New())
 	app.Post("/mphtj_online/Carian_api.cfm", func(c *fiber.Ctx) error {
 		var request KompaunRequest
 		if err := c.BodyParser(&request); err != nil {
