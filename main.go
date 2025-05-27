@@ -50,7 +50,7 @@ func main() {
 		log.Println(request.CarianKompaun)
 		log.Println(request.Carian)
 
-		if request.Carian != "" || request.CarianKompaun != "\"\"" {
+		if request.CarianKompaun != "" {
 			compoundAmnt := compounds[request.CarianKompaun]
 			listResponse := []KompaunDetail{}
 			data := KompaunDetail{
