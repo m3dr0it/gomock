@@ -28,6 +28,10 @@ type KompaunResponse struct {
 	Status string `json:"status"`
 }
 
+type UpdateCukaiResponse struct {
+	Message string `json:"message"`
+}
+
 func main() {
 	compounds := map[string]int{
 		"KMP100001": 50,
@@ -110,8 +114,15 @@ func main() {
 			Status: "BERJAYA",
 		}
 		return c.JSON(response)
-
 	})
+
+	app.Post("/api/updatePayCukai", func(c *fiber.Ctx) error {
+		response := UpdateCukaiResponse{
+			Message: "success",
+		}
+		return c.JSON(response)
+	})
+
 	app.Get("/hello/:name", func(c *fiber.Ctx) error {
 		name := c.Params("name")
 		return c.SendString("Hello " + name + " 👊")
