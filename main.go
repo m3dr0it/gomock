@@ -24,6 +24,10 @@ type KompaunDetail struct {
 	NamaKesalahan string `json:"SAL_NAMA"`
 }
 
+type KompaunResponse struct {
+	Status string `json:"status"`
+}
+
 func main() {
 	compounds := map[string]int{
 		"KMP100001": 50,
@@ -101,12 +105,19 @@ func main() {
 		return c.SendString("Fiber jalan bangsat 💥")
 	})
 
+	app.Post("/splk/sonic.php", func(c *fiber.Ctx) error {
+		response := KompaunResponse{
+			Status: "BERJAYA",
+		}
+		return c.JSON(response)
+
+	})
 	app.Get("/hello/:name", func(c *fiber.Ctx) error {
 		name := c.Params("name")
 		return c.SendString("Hello " + name + " 👊")
 	})
 
-	err := app.Listen(":8080")
+	err := app.Listen(":8090")
 	if err != nil {
 		panic(err)
 	}
