@@ -7,6 +7,7 @@ import (
 )
 
 // gw update dari branch1
+// gw update dari branch_2
 type KompaunRequest struct {
 	Carian        string `json:"Carian"`
 	CarianKompaun string `json:"Carian_Kompaun"`
