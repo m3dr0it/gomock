@@ -6,7 +6,6 @@ import (
 	"log"
 )
 
-// gw update dari branch1
 type KompaunRequest struct {
 	Carian        string `json:"Carian"`
 	CarianKompaun string `json:"Carian_Kompaun"`
@@ -134,3 +133,5 @@ func main() {
 		panic(err)
 	}
 }
+
+//gw update dari branch a
