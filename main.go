@@ -28,6 +28,10 @@ type KompaunResponse struct {
 	Status string `json:"status"`
 }
 
+type ParkmaxCompoundResponse struct {
+	Status string `json:"Status"`
+}
+
 type UpdateCukaiResponse struct {
 	Message string `json:"message"`
 }
@@ -129,7 +133,7 @@ func main() {
 	})
 
 	app.Post("/UpdatePaymentWS", func(c *fiber.Ctx) error {
-		response := KompaunResponse{
+		response := ParkmaxCompoundResponse{
 			Status: "success",
 		}
 		return c.JSON(response)
