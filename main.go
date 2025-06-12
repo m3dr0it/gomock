@@ -128,6 +128,13 @@ func main() {
 		return c.SendString("Hello " + name + " 👊")
 	})
 
+	app.Post("/UpdatePaymentWS", func(c *fiber.Ctx) error {
+		response := KompaunResponse{
+			Status: "success",
+		}
+		return c.JSON(response)
+	})
+
 	err := app.Listen(":8090")
 	if err != nil {
 		panic(err)
