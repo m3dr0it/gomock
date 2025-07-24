@@ -4,6 +4,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"log"
+	"strings"
 )
 
 type KompaunRequest struct {
@@ -53,6 +54,7 @@ func main() {
 	app := fiber.New()
 	app.Use(logger.New())
 	app.Post("/mphtj_online/Carian_api.cfm", func(c *fiber.Ctx) error {
+		returnEmpty := false
 		request := KompaunRequest{
 			Carian:        c.FormValue("Carian"),
 			CarianKompaun: c.FormValue("Carian_Kompaun"),
@@ -106,7 +108,17 @@ func main() {
 				break
 			}
 		}
-		return c.JSON(list)
+
+		if strings.HasSuffix(request.CarianKompaun, "EMPTY") {
+			returnEmpty = true
+		}
+
+		if !returnEmpty {
+			return c.JSON(list)
+		} else {
+			return c.JSON([]KompaunDetail{})
+		}
+
 	})
 
 	app.Get("/", func(c *fiber.Ctx) error {
