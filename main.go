@@ -1,15 +1,20 @@
 package main
 
 import (
+	"encoding/json"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"gomock/model"
 	"log"
+	"math/rand"
 	"strings"
+	"time"
 )
 
 type KompaunRequest struct {
 	Carian        string `json:"Carian"`
 	CarianKompaun string `json:"Carian_Kompaun"`
+	Searchvalue   string `json:"searchvalue"`
 }
 
 type KompaunDetail struct {
@@ -151,12 +156,93 @@ func main() {
 		return c.JSON(response)
 	})
 
+	app.Post("/GetPenyataProcess", func(c *fiber.Ctx) error {
+		response := map[string]string{
+			"NOPENYATA": "P000000",
+		}
+		return c.JSON(response)
+	})
+
+	app.Post("/GetCompDetailToPaySP", func(c *fiber.Ctx) error {
+		list := []model.CompoundResult{}
+
+		request := KompaunRequest{
+			Searchvalue: c.FormValue("searchvalue"),
+		}
+
+		response := model.GenerateCompoundResult()
+
+		if request.Searchvalue == "error" {
+			err := "Error"
+			response.Error = &err
+		}
+
+		if request.Searchvalue == "0" {
+			return c.JSON([]model.CompoundResult{})
+		}
+
+		list = append(list, response)
+		return c.JSON(list)
+	})
+
+	app.Get("/commercepay/transaction", func(c *fiber.Ctx) error {
+		resp := model.Response{
+			Resutl: model.Result{
+				TransactionNumber:         "TX-" + randString(12),
+				ReferenceCode:             "ORX0000668" + randString(2),
+				Status:                    1, // fixed 0
+				CurrencyCode:              randomCurrency(),
+				Amount:                    int64(rand.Intn(9) + 10),
+				ChannelID:                 rand.Intn(10) + 1,
+				ProviderTransactionNumber: "PTX-" + randString(10),
+				CreationTime:              time.Now().UTC(),
+				Remark:                    "Mocked response " + randString(5),
+				ProviderChannelID:         "CH-" + randString(6),
+				ProviderPaymentMethod:     randomPayMethod(),
+			},
+		}
+		return c.JSON(resp)
+	})
+
+	app.Post("/terminal/vehicle/fare/info", func(c *fiber.Ctx) error {
+		data := []byte(`{"respCode": "0000",
+		"respMessage": "Success",
+		"vehicleNo": "ABC55431",
+		"entryDt": "2025-03-24 09:35:18",
+		"parkingId": 46,
+		"parkingFare": 25.5	
+	}`)
+
+		var resp model.FareInfoResponse
+		if err := json.Unmarshal(data, &resp); err != nil {
+			panic(err)
+		}
+
+		return c.JSON(resp)
+
+	})
+
 	err := app.Listen(":8090")
 	if err != nil {
 		panic(err)
 	}
 }
 
-//gw update dari branch a
+func randString(n int) string {
+	const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	b := make([]byte, n)
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(b)
+}
 
-//gw update dari branch b
+func randomCurrency() string {
+	currencies := []string{"IDR", "MYR", "USD", "SGD", "EUR"}
+	return currencies[rand.Intn(len(currencies))]
+}
+
+func randomPayMethod() string {
+	methods := []string{"CARD", "BANK_TRANSFER", "EWALLET", "QRIS", "VIRTUAL_ACCOUNT"}
+	return methods[rand.Intn(len(methods))]
+}
