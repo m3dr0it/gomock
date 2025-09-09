@@ -210,7 +210,7 @@ func main() {
 		"vehicleNo": "ABC55431",
 		"entryDt": "2025-03-24 09:35:18",
 		"parkingId": 46,
-		"parkingFare": 25.5	
+		"parkingFare": 1.5
 	}`)
 
 		var resp model.FareInfoResponse
